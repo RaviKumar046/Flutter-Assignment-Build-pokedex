@@ -1,0 +1,536 @@
+I have a Flutter take-home assignment described in the attached PDF. I want you to COMPLETELY IMPLEMENT the project in my Flutter repository and make it submission-ready.
+
+IMPORTANT:
+
+* First inspect the existing repository/project structure and the attached assignment requirements.
+* Do not just explain the solution. Actually create/edit the files and implement the application.
+* Do not stop after giving examples or partial code.
+* Work directly on the project until the requirements are implemented.
+* Do not ask me unnecessary clarification questions. Make reasonable engineering decisions and document assumptions in README.md.
+* Keep the implementation beginner/fresher-friendly, clean, readable, and easy to explain in an interview.
+* Do not over-engineer the architecture.
+* Use null-safe Dart and current stable Flutter conventions.
+* After implementation, run formatting, static analysis, and tests/build checks and fix all issues you can find.
+
+==================================================
+PROJECT REQUIREMENTS
+====================
+
+Build a Flutter Pokédex app using the public PokéAPI.
+
+API:
+https://pokeapi.co/api/v2/
+
+No authentication is required.
+
+The assignment evaluates:
+
+* Flutter/Dart fundamentals
+* API integration
+* State management
+* UI implementation
+* Clean code structure
+* Real-time favorite synchronization
+* Git usage
+* Technical decision making
+
+==================================================
+
+1. POKÉMON LIST SCREEN
+   ==================================================
+
+Implement the main Pokémon list screen.
+
+Requirements:
+
+1. Fetch paginated Pokémon data from:
+   https://pokeapi.co/api/v2/pokemon?limit=20&offset=0
+
+2. Display Pokémon cards containing at minimum:
+
+* Pokémon name
+* Pokémon image/sprite/artwork
+* Pokémon ID number
+* Favorite heart icon/toggle
+
+3. Implement pagination using the API's `next` field.
+   Use either:
+
+* infinite scrolling
+  OR
+* a Load More pattern
+
+Do not load the entire Pokémon dataset at once.
+
+4. Add a search/filter bar similar to the Figma design.
+   Search should filter the CURRENTLY LOADED Pokémon by name.
+
+5. Initial loading state:
+
+* Show a proper loading indicator.
+
+6. Error state:
+
+* Show a user-friendly error message.
+* Include a Retry button.
+
+7. Handle empty search results gracefully.
+
+==================================================
+2. POKÉMON DETAIL SCREEN
+========================
+
+When the user taps a Pokémon from the list, navigate to a detail screen.
+
+Fetch detailed information using:
+
+https://pokeapi.co/api/v2/pokemon/{name_or_id}
+
+Display at least:
+
+* Pokémon artwork/sprite
+* Pokémon name
+* Types
+* Type-colored chips/badges
+* Height
+* Weight
+* Abilities
+* Base stats including:
+
+  * HP
+  * Attack
+  * Defense
+  * Special Attack
+  * Special Defense
+  * Speed
+
+Stats can be displayed using a clean progress/bar representation or numeric representation.
+
+The detail screen must also contain the same favorite toggle.
+
+==================================================
+3. FAVORITES - MOST IMPORTANT REQUIREMENT
+=========================================
+
+This is the main technical requirement.
+
+Favorite state must:
+
+1. Persist locally on the device.
+2. Work across ALL screens.
+3. Update immediately without manual refresh.
+4. Have ONE single source of truth.
+
+Example:
+
+List Screen:
+Pikachu ❤️
+
+Open Detail Screen:
+Pikachu ❤️
+
+Tap heart:
+Pikachu ♡
+
+Go back to List:
+Pikachu ♡
+
+The list must already reflect the changed value.
+
+Likewise, if a Pokémon is favorited/unfavorited from the List screen, the Detail screen and Favorites screen must use the same state.
+
+DO NOT maintain separate favorite states inside individual screens.
+
+Use a centralized state-management solution.
+
+Recommended simple implementation:
+
+* Provider + ChangeNotifier for shared favorite state
+* SharedPreferences for local persistence
+
+You may use another lightweight solution only if you have a strong reason. If you choose something else, explain why in README.md.
+
+==================================================
+4. FAVORITES SCREEN / TAB
+=========================
+
+Create a third screen/tab called Favorites.
+
+It must:
+
+* Show ONLY favorited Pokémon.
+* Reflect favorite changes in real time.
+* Allow the user to unfavorite Pokémon.
+* Immediately remove/update the item from the Favorites screen.
+* Show an appropriate empty state when there are no favorites.
+
+Example empty state:
+
+"No favorite Pokémon yet ❤️"
+
+==================================================
+5. UI / FIGMA
+=============
+
+Use the provided Figma design as the visual reference.
+
+Match the design reasonably closely:
+
+* Layout hierarchy
+* Card structure
+* Spacing
+* Typography
+* Header
+* Search bar
+* Favorite icon
+* Colors
+* Detail screen organization
+* Bottom navigation/tab layout if appropriate
+
+Pixel-perfect implementation is NOT required.
+
+Prioritize:
+
+* Clean UI
+* Good spacing
+* Consistent components
+* Responsive portrait phone layout
+* Easy navigation
+
+Tablet/landscape support is not required.
+
+==================================================
+6. EDGE CASES
+=============
+
+Properly handle:
+
+* Network failure
+* API failure
+* Retry after failure
+* Empty search result
+* Empty favorites
+* Pagination failure
+* Loading more data
+* Duplicate Pokémon prevention
+* Rapid favorite toggling
+* Slow network
+* Screen navigation while data is loading
+
+Do not crash because the API returns unexpected/null data.
+
+==================================================
+7. CODE ARCHITECTURE
+====================
+
+Use a clean but simple folder structure.
+
+Suggested structure:
+
+lib/
+main.dart
+
+models/
+pokemon.dart
+pokemon_detail.dart
+
+services/
+pokemon_api.dart
+
+providers/
+favorites_provider.dart
+pokemon_provider.dart
+
+screens/
+home_screen.dart
+pokemon_detail_screen.dart
+favorites_screen.dart
+
+widgets/
+pokemon_card.dart
+search_bar.dart
+stat_bar.dart
+type_chip.dart
+
+utils/
+constants.dart
+
+You can modify this structure if needed, but keep responsibilities clearly separated.
+
+Important:
+
+* UI code should not contain raw API logic.
+* API/service layer should handle HTTP requests.
+* Models should represent API data.
+* State management should handle shared application state.
+* Reusable widgets should be extracted where appropriate.
+
+==================================================
+8. API / MODEL IMPLEMENTATION
+=============================
+
+Parse API responses properly rather than relying on dynamic maps everywhere.
+
+Create models with:
+
+* fromJson
+* toJson where useful
+
+At minimum support the data needed by the assignment.
+
+List API needs:
+
+* name
+* URL
+* ID extraction
+* image URL
+
+Detail API needs:
+
+* id
+* name
+* sprites/artwork
+* types
+* height
+* weight
+* abilities
+* stats
+
+Use robust JSON parsing and null safety.
+
+==================================================
+9. FAVORITE STORAGE
+===================
+
+Persist favorites locally.
+
+Store only the minimum data needed for favorites, preferably Pokémon IDs/names rather than unnecessarily caching the full Pokémon dataset.
+
+On application startup:
+
+* Load saved favorites from local storage.
+* Restore them into the shared state manager.
+
+When favorite changes:
+
+* Update in-memory state immediately.
+* Persist it locally.
+
+Make sure UI updates immediately through the state-management mechanism.
+
+==================================================
+10. PACKAGE CHOICES
+===================
+
+Keep dependencies minimal.
+
+Preferred:
+
+http
+provider
+shared_preferences
+
+Use Flutter's built-in widgets wherever practical.
+
+Do not add a large number of unnecessary packages.
+
+==================================================
+11. README.MD
+=============
+
+Create/update README.md with:
+
+1. Project overview
+2. Features
+3. Screens
+4. How to install dependencies
+5. How to run the app
+6. API used
+7. State management approach
+8. Why Provider was selected
+9. Local storage approach
+10. Why SharedPreferences was selected
+11. Folder structure explanation
+12. Important implementation decisions
+13. Known limitations
+14. What could be improved with more time
+
+Also mention any reasonable assumptions made because of ambiguous parts of the Figma/design.
+
+==================================================
+12. CODE QUALITY
+================
+
+Follow official Flutter/Dart conventions.
+
+Before finishing, run:
+
+flutter pub get
+dart format .
+flutter analyze
+
+Run tests if tests exist.
+
+Also perform an appropriate debug/release build check for the supported platform if the environment allows it.
+
+Fix:
+
+* compile errors
+* analyzer warnings/errors
+* null-safety issues
+* bad imports
+* unused code
+* obvious UI/runtime problems
+
+Do not leave TODO placeholders for core requirements.
+
+==================================================
+13. TEST THE MAIN USER FLOWS
+============================
+
+Verify these flows carefully:
+
+FLOW 1:
+App launches
+→ Pokémon list loads
+→ cards display correctly
+
+FLOW 2:
+Scroll to bottom
+→ next Pokémon page loads
+
+FLOW 3:
+Search for "pikachu"
+→ currently loaded results filter correctly
+
+FLOW 4:
+Tap Pokémon
+→ detail page opens
+→ details load
+
+FLOW 5:
+Favorite Pokémon from List
+→ heart changes immediately
+
+FLOW 6:
+Open Detail
+→ same favorite state is shown
+
+FLOW 7:
+Unfavorite from Detail
+→ navigate back
+→ List reflects updated heart immediately
+
+FLOW 8:
+Open Favorites
+→ Pokémon appears/disappears immediately when favorite status changes
+
+FLOW 9:
+Restart app
+→ favorite state remains because it is persisted locally
+
+FLOW 10:
+Network/API failure
+→ user sees readable error state
+→ Retry works
+
+==================================================
+14. IMPORTANT IMPLEMENTATION DETAILS
+====================================
+
+Do not duplicate favorite state between screens.
+
+Use one centralized FavoritesProvider.
+
+Use ChangeNotifier/Provider listeners so screens rebuild automatically.
+
+Avoid unnecessary API requests.
+
+For Pokémon images, use artwork from the API where available, for example:
+sprites.other.official-artwork.front_default
+
+Extract Pokémon ID correctly from API URLs when necessary.
+
+Prevent duplicate entries during pagination.
+
+Show an individual loading indicator when loading more data, rather than replacing the entire existing list.
+
+Do not clear already loaded Pokémon when loading the next page.
+
+Search should operate over the currently loaded list as required by the assignment.
+
+==================================================
+15. GITHUB / COMMITS
+====================
+
+The assignment expects incremental Git commits rather than one giant commit.
+
+Do NOT rewrite Git history unnecessarily.
+
+After implementation, suggest a sensible sequence of commits such as:
+
+1. Initial Flutter project setup
+2. Add API integration and Pokémon models
+3. Implement Pokémon list UI
+4. Add pagination and search
+5. Add Pokémon detail screen
+6. Add centralized favorites state
+7. Add local favorite persistence
+8. Add favorites screen
+9. Improve loading/error/empty states
+10. Final cleanup and README
+
+If Git is already initialized, preserve the existing history.
+
+Do not make fake commits just for appearance. Commits should correspond to actual meaningful changes.
+
+==================================================
+16. FINAL REVIEW
+================
+
+At the end, do a complete requirement audit.
+
+Create a section in your final response:
+
+REQUIREMENT CHECKLIST
+
+For every requirement, mark:
+✅ Implemented
+⚠️ Partial
+❌ Not implemented
+
+Include:
+
+* List API
+* Pagination
+* Search
+* Loading
+* Error handling
+* Detail API
+* Types
+* Height
+* Weight
+* Abilities
+* Stats
+* Favorites
+* Real-time synchronization
+* Single source of truth
+* Local persistence
+* Favorites screen
+* Empty states
+* README
+* Code formatting
+* flutter analyze
+* Build/test verification
+
+Also tell me:
+
+1. Which files you created/modified.
+2. Which packages you added.
+3. Which state-management approach you used and why.
+4. Which local-storage approach you used and why.
+5. Any limitations.
+6. Any commands I should run manually before submission.
+
+MOST IMPORTANT:
+Do not merely tell me how to build it. BUILD IT in the repository, verify it, and leave it in a submission-ready state.
