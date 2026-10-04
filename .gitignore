@@ -7,9 +7,58 @@ out-tsc
 *.tsbuildinfo
 .expo
 .expo-shared
+web-build/
+static-build/
+coverage/
 
 # dependencies
 node_modules
+
+# Flutter / Dart generated files
+.dart_tool/
+.packages
+.pub/
+.pub-cache/
+.flutter-plugins
+.flutter-plugins-dependencies
+**/build/
+
+# Flutter platform-local configuration and generated files
+**/android/local.properties
+**/android/key.properties
+**/android/.gradle/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/ios/Pods/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/App.framework
+**/ios/Flutter/engine/
+**/ios/Flutter/Flutter.podspec
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/doc/api/
+
+# Local environment variables (keep example templates safe to commit)
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Signing keys, certificates, and account credentials
+*.jks
+*.keystore
+*.p8
+*.p12
+*.key
+*.pem
+*.mobileprovision
+**/*service-account*.json
+**/google-services.json
+**/GoogleService-Info.plist
 
 # IDEs and editors
 /.idea
