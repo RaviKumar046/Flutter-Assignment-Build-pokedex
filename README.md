@@ -1,5 +1,7 @@
 🐾 Flutter Pokédex
 
+Quick Link: https://flutter-assignment-builder--24ravi46.replit.app/
+
 A mobile-first Flutter/Dart Pokédex application built as a take-home assignment using the public PokéAPI.
 
 The app lets users browse Pokémon with pagination, search the Pokémon currently loaded in the app, view detailed information, and manage a locally persisted Favorites list with real-time synchronization across screens.
